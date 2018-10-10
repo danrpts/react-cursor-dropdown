@@ -7,11 +7,13 @@ import styles from "./styles.css";
 const DropdownContext = React.createContext({});
 
 function WithCaretDropdown(WrappedComponent) {
-  return class extends Component {
+  class InputWithCaretDropdown extends Component {
     constructor(props) {
       super(props);
 
+      // in case no forwardedRef was passed
       this.inputRefWrapper = React.createRef();
+
       this.replaceKeyword = this.replaceKeyword.bind(this);
 
       this.state = {
@@ -29,7 +31,7 @@ function WithCaretDropdown(WrappedComponent) {
         this.props.value.substring(end);
 
       this.props.onChange({
-        // pass up like its an event object
+        // pass up like it's an event object
         target: {
           value,
           selectionStart: end,
@@ -39,7 +41,9 @@ function WithCaretDropdown(WrappedComponent) {
     }
 
     componentDidUpdate(_, prevState) {
-      const input = this.inputRefWrapper.current.firstChild;
+      const input = this.props.forwardedRef
+        ? this.forwardedRef.current
+        : this.inputRefWrapper.current.firstChild;
       const keyword = deriveKeywordState(this.props);
       const caret = deriveCaretState(input, this.props);
 
@@ -48,7 +52,7 @@ function WithCaretDropdown(WrappedComponent) {
         prevState.keyword.start != keyword.start ||
         prevState.keyword.end != keyword.end ||
         prevState.caret.top != caret.top ||
-        prevState.caret.left != caret.left ||
+        // prevState.caret.left != caret.left ||
         prevState.caret.display != caret.display
       ) {
         this.setState({
@@ -59,12 +63,12 @@ function WithCaretDropdown(WrappedComponent) {
     }
 
     render() {
-      const { children, ...rest } = this.props;
+      const { children, forwardedRef, ...rest } = this.props;
 
       return (
         <div className={styles.caretDropdownContainer}>
           <div ref={this.inputRefWrapper}>
-            <WrappedComponent {...rest} />
+            <WrappedComponent ref={forwardedRef} {...rest} />
           </div>
           <div className={styles.caretDropdown} style={this.state.caret}>
             <DropdownContext.Provider
@@ -79,26 +83,23 @@ function WithCaretDropdown(WrappedComponent) {
         </div>
       );
     }
-  };
+  }
+  return React.forwardRef((props, ref) => {
+    return <InputWithCaretDropdown {...props} forwardedRef={ref} />;
+  });
 }
 
 function CaretDropdown(props) {
-  const { prefix = "", suffix = "", affix = true, component } = props;
-
+  const { pattern, component } = props;
   return (
     <DropdownContext.Consumer>
       {context => {
         const { keyword, replace } = context;
-        const match = keyword.startsWith(prefix);
-        const affixed = value => prefix + value + suffix;
-        const onClick = value => replace(affix ? affixed(value) : value);
-        return (
-          match &&
-          React.createElement(component, {
-            value: keyword.slice(1),
-            onClick
-          })
-        );
+        const match = keyword.match(pattern);
+        return React.createElement(component, {
+          match,
+          onClick: value => replace(value)
+        });
       }}
     </DropdownContext.Consumer>
   );
@@ -124,7 +125,9 @@ function deriveKeywordState(props) {
   return { value: keyword, start, end };
 }
 
-// TODO: remove dependence on el
+// TODO: remove dependence on el ideas:
+// 1) hoist caret state
+// 2) fork textarea-caret
 const deriveCaretState = (el, props) => {
   const {
     selection: { start }
