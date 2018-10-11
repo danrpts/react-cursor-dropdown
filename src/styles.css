@@ -1,7 +1,7 @@
-.caretDropdownContainer {
+.cursorDropdownContainer {
   position: relative !important;
 }
 
-.caretDropdown {
+.cursorDropdown {
   position: absolute !important;
 }
