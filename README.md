@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save react-caret-dropdown
+npm install --save react-cursor-dropdown
 ```
 
 ## Usage
