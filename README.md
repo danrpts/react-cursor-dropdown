@@ -1,6 +1,6 @@
 # react-caret-dropdown
 
-> An ultralight React library for caret dropdown menus.
+> A React HOC for adding cursor dropdown menus to textareas and inputs.
 
 [![NPM](https://img.shields.io/npm/v/react-caret-dropdown.svg)](https://www.npmjs.com/package/react-caret-dropdown) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
