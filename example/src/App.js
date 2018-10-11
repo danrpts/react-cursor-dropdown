@@ -23,7 +23,7 @@ export default class App extends Component {
       }
     };
 
-    this.update = ({
+    this.onChange = ({
       target: { value, selectionStart: start, selectionEnd: end }
     }) => {
       this.setState({
@@ -45,7 +45,7 @@ export default class App extends Component {
               rows="3"
               value={this.state.value}
               selection={this.state.selection}
-              onChange={this.update}
+              onChange={this.onChange}
             >
               <CursorDropdown pattern={/^:([\w+-]*)$/} component={EmojiList} />
               <CursorDropdown pattern={/^@(\w*)$/} component={MentionList} />
