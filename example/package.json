@@ -10,7 +10,7 @@
     "memoize-one": "^4.0.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
-    "react-caret-dropdown": "file:..",
+    "react-cursor-dropdown": "file:..",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
     "reactstrap": "^6.5.0"

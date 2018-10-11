@@ -1,7 +1,7 @@
 {
-  "name": "react-caret-dropdown",
+  "name": "react-cursor-dropdown",
   "version": "1.0.0",
-  "description": "An ultralight React library for caret dropdown menus.",
+  "description": "A React HOC for adding cursor dropdown menus to textareas and inputs.",
   "author": "danrpts",
   "license": "MIT",
   "repository": "danrpts/react-caret-dropdown",

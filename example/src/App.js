@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { WithCursorDropdown, CursorDropdown } from "react-caret-dropdown";
+import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 import EmojiList from "./EmojiList.js";
 import MentionList from "./MentionList.js";
 import { Container, Row, Col, Input } from "reactstrap";
