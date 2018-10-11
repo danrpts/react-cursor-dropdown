@@ -1,4 +1,4 @@
-import { WithCursorDropdown } from "./components/WithCursorDropdown.js";
-import CursorDropdown from "./components/CursorDropdown.js";
+import { WithCursorDropdown } from "./components/WithCursorDropdown.jsx";
+import CursorDropdown from "./components/CursorDropdown.jsx";
 
 export { WithCursorDropdown, CursorDropdown };

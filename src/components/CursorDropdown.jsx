@@ -1,5 +1,5 @@
 import React from "react";
-import { DropdownContext } from "./WithCursorDropdown.js";
+import { DropdownContext } from "./WithCursorDropdown.jsx";
 
 export default function CursorDropdown(props) {
   const { pattern, component } = props;
@@ -11,12 +11,7 @@ export default function CursorDropdown(props) {
         return match
           ? React.createElement(component, {
               filterText: match[1],
-              onClick: value => onClick(value),
-              style: {
-                position: "absolute",
-                top: cursor.coordinates.top,
-                left: cursor.coordinates.left
-              }
+              onClick: value => onClick(value)
             })
           : null;
       }}
