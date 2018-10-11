@@ -13,15 +13,46 @@ npm install --save react-cursor-dropdown
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import MyComponent from 'react-cursor-dropdown'
+import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 
-class Example extends Component {
-  render () {
+const Input = props => <input {...props} />;
+const InputCursorDropdown = WithCursorDropdown(Input);
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: "",
+      selection: {
+        start: 0,
+        end: 0
+      }
+    };
+
+    this.onChange = e => {
+      this.setState({
+        value: e.target.value,
+        selection: {
+          start: e.target.selectionStart,
+          end: e.target.selectionEnd
+        }
+      });
+    };
+  }
+
+  render() {
     return (
-      <MyComponent />
-    )
+      <InputCursorDropdown
+        value={this.state.value}
+        selection={this.state.selection}
+        onChange={this.onChange}
+      >
+        <CursorDropdown pattern={/^:([\w+-]*)$/} component={EmojiList} />
+      </InputCursorDropdown>
+    );
   }
 }
 ```
