@@ -1,4 +1,4 @@
-# react-caret-dropdown
+# react-cursor-dropdown
 
 > A React HOC for adding cursor dropdown menus to textareas and inputs.
 
@@ -15,7 +15,7 @@ npm install --save react-cursor-dropdown
 ```jsx
 import React, { Component } from 'react'
 
-import { WithCursorDropdown, CursorDropdown } from "react-caret-dropdown";
+import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 
 const Input = props => <input {...props} />;
 const InputCursorDropdown = WithCursorDropdown(Input);
