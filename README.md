@@ -15,12 +15,39 @@ npm install --save react-caret-dropdown
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'react-caret-dropdown'
+import { WithCursorDropdown, CursorDropdown } from "react-caret-dropdown";
 
-class Example extends Component {
+const Input = props => <input {...props} />;
+const InputCursorDropdown = WithCursorDropdown(Input);
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: "",
+      selection: {
+        start: 0,
+        end: 0
+      }
+    };
+
+    this.onChange = e => {
+      this.setState({
+        value: e.target.value,
+        selection: {
+          start: e.target.selectionStart,
+          end: e.target.selectionEnd
+        }
+      });
+    };
+  }
+  
   render () {
     return (
-      <MyComponent />
+      <InputCursorDropdown value={this.state.value} selection={this.state.selection} onChange={this.onChange}>
+        <CursorDropdown pattern={/^:([\w+-]*)$/} component={EmojiList} />
+      </InputCursorDropdown>
     )
   }
 }
