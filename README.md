@@ -17,6 +17,9 @@ import React, { Component } from "react";
 
 import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 
+// Import the component you want to dropdown from the cursor
+import SomeListComponent from "SomeListComponent";
+
 const Input = props => <input {...props} />;
 const InputCursorDropdown = WithCursorDropdown(Input);
 
@@ -50,7 +53,8 @@ class App extends Component {
         selection={this.state.selection}
         onChange={this.onChange}
       >
-        <CursorDropdown pattern={/^:([\w+-]*)$/} component={EmojiList} />
+        // Specify the regex to match against the current word
+        <CursorDropdown pattern={/^:(\w*)$/} component={SomeListComponent} />
       </InputCursorDropdown>
     );
   }
