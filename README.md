@@ -1,6 +1,7 @@
 # react-cursor-dropdown
 
-> A React HOC for adding cursor dropdown menus to textareas and inputs.
+> A React HOC for adding cursor dropdown menus to textareas and inputs - [Try it out!](https://superdan.io/react-cursor-dropdown/)
+
 
 [![NPM](https://img.shields.io/npm/v/react-cursor-dropdown.svg)](https://www.npmjs.com/package/react-cursor-dropdown) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
