@@ -37,14 +37,22 @@ function WithCursorDropdown(WrappedComponent) {
           selectionEnd: value.length
         }
       });
-
-      this.getInput().focus();
     }
 
     getInput() {
       return this.props.forwardRef
         ? this.props.forwardRef.current
         : this.inputWrapperRef.current.firstChild;
+    }
+
+    componentDidMount() {
+      this.setState({
+        cursor: deriveCursorState(this.getInput(), this.props)
+      });
+      // this might change (keep focus state instead?)
+      if (this.props.focusOnMount) {
+        this.getInput().focus();
+      }
     }
 
     componentDidUpdate(prevProps) {
@@ -56,6 +64,7 @@ function WithCursorDropdown(WrappedComponent) {
         this.setState({
           cursor: deriveCursorState(this.getInput(), this.props)
         });
+        this.getInput().focus();
       }
     }
 
