@@ -1,10 +1,7 @@
 import getCaretCoordinates from "textarea-caret";
 
-function getCursorWord(props) {
-  let {
-    value,
-    selection: { start, end }
-  } = props;
+function getCursorWord(el) {
+  let { value, selectionStart: start, selectionEnd: end } = el;
 
   if (start === end) {
     let wordLeft = value
@@ -19,15 +16,20 @@ function getCursorWord(props) {
   return { value: word, start, end };
 }
 
-export default function deriveCursorState(el, props) {
-  const word = getCursorWord(props);
-  const cursor = getCaretCoordinates(el, word.start);
-  const top = el.offsetTop + cursor.top + cursor.height - el.scrollTop;
-  const left = el.offsetLeft + cursor.left - el.scrollLeft;
+export default function deriveCursorState(el) {
+  const word = getCursorWord(el);
+  const caret = getCaretCoordinates(el, word.start);
+  const top = el.offsetTop - el.scrollTop + caret.top;
+  const left = el.offsetLeft - el.scrollLeft + caret.left;
   const inYBounds =
     el.offsetTop <= top && top <= el.offsetTop + el.offsetHeight;
   const inXBounds =
     el.offsetLeft <= left && left <= el.offsetLeft + el.offsetWidth;
   const isHidden = !inYBounds || !inXBounds;
-  return { word, coordinates: { top, left }, isHidden };
+  return {
+    word,
+    coordinates: { top, left },
+    height: caret.height,
+    isHidden
+  };
 }

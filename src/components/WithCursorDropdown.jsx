@@ -10,7 +10,7 @@ function WithCursorDropdown(WrappedComponent) {
   class InputWithCursorDropdown extends Component {
     constructor(props) {
       super(props);
-      this.inputWrapperRef = React.createRef();
+      this.substituteRef = React.createRef();
       this.replaceCursorWord = this.replaceCursorWord.bind(this);
       this.state = {
         cursor: {
@@ -40,41 +40,35 @@ function WithCursorDropdown(WrappedComponent) {
     }
 
     getInput() {
-      return this.props.forwardRef
-        ? this.props.forwardRef.current
-        : this.inputWrapperRef.current.firstChild;
+      return this.props.forwardedRef
+        ? this.props.forwardedRef.current
+        : this.substituteRef.current;
     }
 
     componentDidMount() {
+      const input = this.getInput();
+      const cursor = deriveCursorState(input);
       this.setState({
-        cursor: deriveCursorState(this.getInput(), this.props)
+        cursor
       });
-      // this might change (keep focus state instead?)
-      if (this.props.focusOnMount) {
-        this.getInput().focus();
-      }
+      input.focus(); // TODO: is this ideal behavior?
     }
 
     componentDidUpdate(prevProps) {
-      if (
-        this.props.value !== prevProps.value ||
-        this.props.selection.start !== prevProps.selection.start ||
-        this.props.selection.end !== prevProps.selection.end
-      ) {
+      if (this.props.value !== prevProps.value) {
+        const input = this.getInput();
         this.setState({
-          cursor: deriveCursorState(this.getInput(), this.props)
+          cursor: deriveCursorState(input, this.props)
         });
-        this.getInput().focus();
       }
     }
 
     render() {
       const { children, forwardedRef, ...remainingProps } = this.props;
+      const ref = forwardedRef ? forwardedRef : this.substituteRef;
       return (
-        <div className={styles.cusorDropdownContainer}>
-          <div ref={this.inputWrapperRef}>
-            <WrappedComponent ref={forwardedRef} {...remainingProps} />
-          </div>
+        <div className={styles.cursorDropdownContainer}>
+          <WrappedComponent ref={ref} {...remainingProps} />
           <div
             className={styles.cursorDropdown}
             style={this.state.cursor.coordinates}

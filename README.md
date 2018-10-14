@@ -21,7 +21,8 @@ import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 // Import the component you want to dropdown from the cursor
 import SomeListComponent from "SomeListComponent";
 
-const Input = props => <input {...props} />;
+// BUG: textarea-caret does not support border-box; working on fix;
+const Input = props => <input {...props} style={{ boxSizing: "content-box" }} />;
 const InputCursorDropdown = WithCursorDropdown(Input);
 
 class App extends Component {

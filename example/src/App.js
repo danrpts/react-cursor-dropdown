@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 import EmojiList from "./EmojiList.js";
-import MentionList from "./MentionList.js";
-import { Container, Row, Col, Input, FormText } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  FormText,
+  FormGroup,
+  Input as ReactStrapInput
+} from "reactstrap";
 
 import "bootstrap/dist/css/bootstrap.css";
 
-// do not put this in render fn
+const Input = React.forwardRef((props, ref) => {
+  return (
+    <ReactStrapInput
+      innerRef={ref}
+      {...props}
+      /* BUG: textarea-caret does not support border-box; working on fix */
+      style={{ boxSizing: "content-box" }}
+    />
+  );
+});
+
+// NOTE: do not put this in render fn
 const InputCursorDropdown = WithCursorDropdown(Input);
 
 export default class App extends Component {
@@ -14,22 +31,12 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      value: ":",
-      selection: {
-        start: 1,
-        end: 1
-      }
+      value: ":sm"
     };
 
-    this.onChange = ({
-      target: { value, selectionStart: start, selectionEnd: end }
-    }) => {
+    this.onChange = e => {
       this.setState({
-        value,
-        selection: {
-          start,
-          end
-        }
+        value: e.target.value
       });
     };
   }
@@ -45,9 +52,10 @@ export default class App extends Component {
                 A React HOC for adding cursor dropdown menus to textareas and
                 inputs.
               </p>
+
               <p>
                 <a
-                  className="github-button"
+                  class="github-button"
                   href="https://github.com/danrpts/react-cursor-dropdown"
                   data-icon="octicon-star"
                   data-size="large"
@@ -57,7 +65,7 @@ export default class App extends Component {
                 </a>
                 <span className="ml-2">
                   <a
-                    className="github-button"
+                    class="github-button"
                     href="https://github.com/danrpts/react-cursor-dropdown/fork"
                     data-icon="octicon-repo-forked"
                     data-size="large"
@@ -68,19 +76,21 @@ export default class App extends Component {
                 </span>
               </p>
             </div>
-            <FormText color="muted">
-              Type to filter the emoji list, use the up/down arrows to move the
-              highlight, and enter/tab to select.
-            </FormText>
-            <InputCursorDropdown
-              rows="3"
-              value={this.state.value}
-              selection={this.state.selection}
-              onChange={this.onChange}
-              focusOnMount
-            >
-              <CursorDropdown pattern={/^:([\w+-]*)$/} component={EmojiList} />
-            </InputCursorDropdown>
+            <FormGroup>
+              <FormText color="muted mb-2">
+                Type to filter the emoji list, use the up/down arrows to move
+                the highlight, and enter/tab to select.
+              </FormText>
+              <InputCursorDropdown
+                value={this.state.value}
+                onChange={this.onChange}
+              >
+                <CursorDropdown
+                  pattern={/^:([\w+-]*)$/}
+                  component={EmojiList}
+                />
+              </InputCursorDropdown>
+            </FormGroup>
           </Col>
         </Row>
       </Container>

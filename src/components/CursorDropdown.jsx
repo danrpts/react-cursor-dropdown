@@ -1,6 +1,8 @@
 import React from "react";
 import { DropdownContext } from "./WithCursorDropdown.jsx";
 
+import styles from "../styles.css";
+
 export default function CursorDropdown(props) {
   const { pattern, component } = props;
   return (
