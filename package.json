@@ -1,7 +1,7 @@
 {
   "name": "react-cursor-dropdown",
-  "version": "1.0.0",
-  "description": "A React HOC for adding cursor dropdown menus to textareas and inputs.",
+  "version": "1.0.1",
+  "description": "A React HOC for adding cursor dropdown menus to textareas and text inputs.",
   "author": "danrpts",
   "license": "MIT",
   "repository": "danrpts/react-cursor-dropdown",
@@ -56,8 +56,5 @@
   },
   "files": [
     "dist"
-  ],
-  "dependencies": {
-    "textarea-caret": "^3.1.0"
-  }
+  ]
 }

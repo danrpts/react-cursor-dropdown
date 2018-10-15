@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import deriveCursorState from "./deriveCursorState.js";
 
 import styles from "../styles.css";
@@ -8,9 +8,16 @@ const DropdownContext = React.createContext({});
 
 function WithCursorDropdown(WrappedComponent) {
   class InputWithCursorDropdown extends Component {
+    // TODO:
+    // static propTypes = {
+    //   value: PropTypes.string.isRequired,
+    //   onChange: PropTypes.func.isRequired,
+    //   forwardedRef: PropTypes.node
+    // };
+
     constructor(props) {
       super(props);
-      this.substituteRef = React.createRef();
+      this.wrapperRef = React.createRef();
       this.replaceCursorWord = this.replaceCursorWord.bind(this);
       this.state = {
         cursor: {
@@ -42,7 +49,7 @@ function WithCursorDropdown(WrappedComponent) {
     getInput() {
       return this.props.forwardedRef
         ? this.props.forwardedRef.current
-        : this.substituteRef.current;
+        : this.wrapperRef.current.firstChild;
     }
 
     componentDidMount() {
@@ -65,10 +72,11 @@ function WithCursorDropdown(WrappedComponent) {
 
     render() {
       const { children, forwardedRef, ...remainingProps } = this.props;
-      const ref = forwardedRef ? forwardedRef : this.substituteRef;
       return (
         <div className={styles.cursorDropdownContainer}>
-          <WrappedComponent ref={ref} {...remainingProps} />
+          <div ref={this.wrapperRef}>
+            <WrappedComponent ref={forwardedRef} {...remainingProps} />
+          </div>
           <div
             className={styles.cursorDropdown}
             style={this.state.cursor.coordinates}

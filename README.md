@@ -21,8 +21,7 @@ import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 // Import the component you want to dropdown from the cursor
 import SomeListComponent from "SomeListComponent";
 
-// BUG: textarea-caret does not support border-box; working on fix;
-const Input = props => <input {...props} style={{ boxSizing: "content-box" }} />;
+const Input = props => <input {...props} />;
 const InputCursorDropdown = WithCursorDropdown(Input);
 
 class App extends Component {
@@ -30,20 +29,12 @@ class App extends Component {
     super(props);
 
     this.state = {
-      value: "",
-      selection: {
-        start: 0,
-        end: 0
-      }
+      value: ""
     };
 
     this.onChange = e => {
       this.setState({
-        value: e.target.value,
-        selection: {
-          start: e.target.selectionStart,
-          end: e.target.selectionEnd
-        }
+        value: e.target.value
       });
     };
   }
@@ -52,10 +43,9 @@ class App extends Component {
     return (
       <InputCursorDropdown
         value={this.state.value}
-        selection={this.state.selection}
         onChange={this.onChange}
       >
-        // Specify the regex to match against the current word
+        // Specify the regex to match against the current word (capture group required)
         <CursorDropdown pattern={/^:(\w*)$/} component={SomeListComponent} />
       </InputCursorDropdown>
     );

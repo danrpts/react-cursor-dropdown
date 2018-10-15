@@ -13,14 +13,7 @@ import {
 import "bootstrap/dist/css/bootstrap.css";
 
 const Input = React.forwardRef((props, ref) => {
-  return (
-    <ReactStrapInput
-      innerRef={ref}
-      {...props}
-      /* BUG: textarea-caret does not support border-box; working on fix */
-      style={{ boxSizing: "content-box" }}
-    />
-  );
+  return <ReactStrapInput innerRef={ref} {...props} />;
 });
 
 // NOTE: do not put this in render fn
@@ -50,7 +43,7 @@ export default class App extends Component {
               <h1 className="display-4">react-cursor-dropdown</h1>
               <p className="lead">
                 A React HOC for adding cursor dropdown menus to textareas and
-                inputs.
+                text inputs.
               </p>
 
               <p>

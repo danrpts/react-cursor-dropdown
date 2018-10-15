@@ -1,4 +1,4 @@
-import getCaretCoordinates from "textarea-caret";
+import getCaretCoordinates from "./getCaretCoordinates.js";
 
 function getCursorWord(el) {
   let { value, selectionStart: start, selectionEnd: end } = el;
