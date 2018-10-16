@@ -143,9 +143,9 @@ export default function getCaretCoordinates(element, position, options) {
   div.appendChild(span);
 
   var coordinates = {
-    top: span.offsetTop + parseInt(computed["borderTopWidth"]),
-    left: span.offsetLeft + parseInt(computed["borderLeftWidth"]),
-    height: parseInt(computed["lineHeight"])
+    top: span.offsetTop + parseInt(computed.borderTopWidth),
+    left: span.offsetLeft + parseInt(computed.borderLeftWidth),
+    height: parseInt(computed.lineHeight)
   };
 
   if (debug) {

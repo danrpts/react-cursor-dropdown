@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
 import deriveCursorState from "./deriveCursorState.js";
 
 import styles from "../styles.css";
@@ -10,40 +9,21 @@ function WithCursorDropdown(WrappedComponent) {
   class InputWithCursorDropdown extends Component {
     // TODO:
     // static propTypes = {
-    //   value: PropTypes.string.isRequired,
-    //   onChange: PropTypes.func.isRequired,
+    //   onDropdownChange: PropTypes.func,
     //   forwardedRef: PropTypes.node
     // };
 
     constructor(props) {
       super(props);
       this.wrapperRef = React.createRef();
-      this.replaceCursorWord = this.replaceCursorWord.bind(this);
+      this.handleDropdownChange = this.handleDropdownChange.bind(this);
       this.state = {
         cursor: {
           word: { value: "", start: 0, end: 0 },
           coordinates: { top: 0, left: 0 },
-          isHidden: false
+          isInBounds: true
         }
       };
-    }
-
-    replaceCursorWord(replacementText = "") {
-      const { start, end } = this.state.cursor.word;
-
-      const value =
-        this.props.value.substring(0, start) +
-        replacementText +
-        this.props.value.substring(end);
-
-      // simulate event object; this might change
-      this.props.onChange({
-        target: {
-          value,
-          selectionStart: value.length,
-          selectionEnd: value.length
-        }
-      });
     }
 
     getInput() {
@@ -52,26 +32,41 @@ function WithCursorDropdown(WrappedComponent) {
         : this.wrapperRef.current.firstChild;
     }
 
-    componentDidMount() {
-      const input = this.getInput();
-      const cursor = deriveCursorState(input);
-      this.setState({
-        cursor
+    handleDropdownChange(value) {
+      this.props.onDropdownChange({
+        value,
+        cursor: this.state.cursor.word
       });
-      input.focus(); // TODO: is this ideal behavior?
+      this.getInput().focus();
     }
 
-    componentDidUpdate(prevProps) {
-      if (this.props.value !== prevProps.value) {
-        const input = this.getInput();
+    componentDidMount() {
+      this.setState({
+        cursor: deriveCursorState(this.getInput())
+      });
+    }
+
+    componentDidUpdate(_, prevState) {
+      const cursor = deriveCursorState(this.getInput());
+      if (
+        cursor.word.start !== prevState.cursor.word.start ||
+        cursor.word.end !== prevState.cursor.word.end ||
+        cursor.isInBounds !== prevState.cursor.isInBounds
+      ) {
+        // NOTE: coordinates change iff start changes
         this.setState({
-          cursor: deriveCursorState(input, this.props)
+          cursor
         });
       }
     }
 
     render() {
-      const { children, forwardedRef, ...remainingProps } = this.props;
+      const {
+        children,
+        onCursorDropdownChange, // just toremove from passed remainingProps
+        forwardedRef,
+        ...remainingProps
+      } = this.props;
       return (
         <div className={styles.cursorDropdownContainer}>
           <div ref={this.wrapperRef}>
@@ -79,12 +74,16 @@ function WithCursorDropdown(WrappedComponent) {
           </div>
           <div
             className={styles.cursorDropdown}
-            style={this.state.cursor.coordinates}
+            style={{
+              ...this.state.cursor.coordinates,
+              marginTop: this.state.cursor.height
+            }}
+            hidden={!this.state.cursor.isInBounds}
           >
             <DropdownContext.Provider
               value={{
-                cursor: this.state.cursor,
-                onClick: this.replaceCursorWord
+                cursor: this.state.cursor.word,
+                handleDropdownChange: this.handleDropdownChange
               }}
             >
               {children}

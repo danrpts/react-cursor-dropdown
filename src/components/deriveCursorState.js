@@ -4,13 +4,11 @@ function getCursorWord(el) {
   let { value, selectionStart: start, selectionEnd: end } = el;
 
   if (start === end) {
-    let wordLeft = value
+    start -= value
       .substring(0, start)
       .split(/\s+/)
-      .pop();
-    let wordRight = value.substring(end).split(/\s+/)[0];
-    start -= wordLeft.length;
-    end += wordRight.length;
+      .pop().length;
+    end += value.substring(end).split(/\s+/)[0].length;
   }
   const word = value.substring(start, end);
   return { value: word, start, end };
@@ -25,11 +23,11 @@ export default function deriveCursorState(el) {
     el.offsetTop <= top && top <= el.offsetTop + el.offsetHeight;
   const inXBounds =
     el.offsetLeft <= left && left <= el.offsetLeft + el.offsetWidth;
-  const isHidden = !inYBounds || !inXBounds;
+  const isInBounds = inYBounds && inXBounds;
   return {
     word,
     coordinates: { top, left },
     height: caret.height,
-    isHidden
+    isInBounds
   };
 }

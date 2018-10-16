@@ -27,9 +27,18 @@ export default class App extends Component {
       value: ":sm"
     };
 
-    this.onChange = e => {
+    this.handleChange = ({ target }) => {
       this.setState({
-        value: e.target.value
+        value: target.value
+      });
+    };
+
+    this.handleDropdownChange = ({ value, cursor }) => {
+      this.setState({
+        value:
+          this.state.value.substring(0, cursor.start) +
+          value +
+          this.state.value.substring(cursor.end)
       });
     };
   }
@@ -45,10 +54,9 @@ export default class App extends Component {
                 A React HOC for adding cursor dropdown menus to textareas and
                 text inputs.
               </p>
-
               <p>
                 <a
-                  class="github-button"
+                  className="github-button"
                   href="https://github.com/danrpts/react-cursor-dropdown"
                   data-icon="octicon-star"
                   data-size="large"
@@ -58,7 +66,7 @@ export default class App extends Component {
                 </a>
                 <span className="ml-2">
                   <a
-                    class="github-button"
+                    className="github-button"
                     href="https://github.com/danrpts/react-cursor-dropdown/fork"
                     data-icon="octicon-repo-forked"
                     data-size="large"
@@ -76,7 +84,8 @@ export default class App extends Component {
               </FormText>
               <InputCursorDropdown
                 value={this.state.value}
-                onChange={this.onChange}
+                onChange={this.handleChange}
+                onDropdownChange={this.handleDropdownChange}
               >
                 <CursorDropdown
                   pattern={/^:([\w+-]*)$/}

@@ -2,7 +2,6 @@
 
 > A React HOC for adding cursor dropdown menus to textareas and inputs - [Try it out!](https://superdan.io/react-cursor-dropdown/)
 
-
 [![NPM](https://img.shields.io/npm/v/react-cursor-dropdown.svg)](https://www.npmjs.com/package/react-cursor-dropdown) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
@@ -32,10 +31,14 @@ class App extends Component {
       value: ""
     };
 
-    this.onChange = e => {
+    this.handleChange = ({ target }) => {
       this.setState({
-        value: e.target.value
+        value: target.value
       });
+    };
+
+    this.handleCursorDropdownChange = ({ value, cursor }) => {
+      // Do something with the value from the dropdown
     };
   }
 
@@ -43,9 +46,11 @@ class App extends Component {
     return (
       <InputCursorDropdown
         value={this.state.value}
-        onChange={this.onChange}
+        onChange={this.handleChange}
+        onCursorDropdownChange={this.handleCursorDropdownChange}
       >
-        // Specify the regex to match against the current word (capture group required)
+        // Specify the regex to match against the current word (capture group
+        required)
         <CursorDropdown pattern={/^:(\w*)$/} component={SomeListComponent} />
       </InputCursorDropdown>
     );

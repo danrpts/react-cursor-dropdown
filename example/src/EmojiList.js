@@ -12,8 +12,8 @@ export default class EmojiList extends Component {
 
     this.show = () => this.setState({ isHidden: false });
     this.hide = () => this.setState({ isHidden: true });
-    this.propogateClick = this.propogateClick.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
 
     this.filtered = [];
 
@@ -23,14 +23,14 @@ export default class EmojiList extends Component {
     };
   }
 
-  propogateClick(e) {
+  handleChange(e) {
     e.preventDefault();
     const id = this.filtered[this.state.option];
     const { emoji } = gemoji.name[id];
-    this.props.onClick(`${emoji} `);
+    this.props.onChange(`${emoji} `);
   }
 
-  onKeyDown(e) {
+  handleKeyDown(e) {
     if (this.state.isHidden || this.filtered.length < 1) {
       return null;
     }
@@ -42,7 +42,7 @@ export default class EmojiList extends Component {
         break;
       case "Enter":
       case "Tab":
-        this.propogateClick(e);
+        this.handleChange(e);
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -62,7 +62,7 @@ export default class EmojiList extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("keydown", this.onKeyDown);
+    window.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentDidUpdate(prevProps) {
@@ -72,7 +72,7 @@ export default class EmojiList extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keydown", this.onKeyDown);
+    window.removeEventListener("keydown", this.handleKeyDown);
   }
 
   render() {
@@ -81,16 +81,16 @@ export default class EmojiList extends Component {
       <ListGroup role="listbox" hidden={this.state.isHidden}>
         {this.filtered.map((emojiName, i) => {
           const { name, emoji } = gemoji.name[emojiName];
-          const isSelected = i === this.state.option;
+          const isActive = i === this.state.option;
           return (
             <ListGroupItem
               role="option"
-              active={isSelected}
-              aria-selected={isSelected}
+              active={isActive}
+              aria-selected={isActive}
               key={emojiName}
               tag="button"
               action
-              onClick={this.propogateClick}
+              onClick={this.handleChange}
             >
               {emoji} {name}
             </ListGroupItem>
