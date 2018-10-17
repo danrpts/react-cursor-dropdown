@@ -12,7 +12,7 @@ export default class EmojiList extends Component {
 
     this.show = () => this.setState({ isHidden: false });
     this.hide = () => this.setState({ isHidden: true });
-    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
 
     this.filtered = [];
@@ -23,11 +23,8 @@ export default class EmojiList extends Component {
     };
   }
 
-  handleChange(e) {
-    e.preventDefault();
-    const id = this.filtered[this.state.option];
-    const { emoji } = gemoji.name[id];
-    this.props.onChange(`${emoji} `);
+  handleClick(e) {
+    this.props.onChange(`${e.target.value} `);
   }
 
   handleKeyDown(e) {
@@ -42,7 +39,9 @@ export default class EmojiList extends Component {
         break;
       case "Enter":
       case "Tab":
-        this.handleChange(e);
+        const id = this.filtered[this.state.option];
+        const { emoji } = gemoji.name[id];
+        this.props.onChange(`${emoji} `);
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -79,18 +78,19 @@ export default class EmojiList extends Component {
     this.filtered = filter(this.props.filterText);
     return (
       <ListGroup role="listbox" hidden={this.state.isHidden}>
-        {this.filtered.map((emojiName, i) => {
-          const { name, emoji } = gemoji.name[emojiName];
+        {this.filtered.map((key, i) => {
+          const { name, emoji } = gemoji.name[key];
           const isActive = i === this.state.option;
           return (
             <ListGroupItem
               role="option"
               active={isActive}
               aria-selected={isActive}
-              key={emojiName}
+              key={name}
+              value={emoji}
               tag="button"
               action
-              onClick={this.handleChange}
+              onClick={this.handleClick}
             >
               {emoji} {name}
             </ListGroupItem>
