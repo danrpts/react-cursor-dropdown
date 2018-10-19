@@ -33,7 +33,7 @@ export default class App extends Component {
       });
     };
 
-    this.handleDropdownChange = ({ value, cursor }) => {
+    this.handleCursorDropdownChange = ({ value, cursor }) => {
       this.setState({
         value:
           this.state.value.substring(0, cursor.start) +
@@ -85,7 +85,7 @@ export default class App extends Component {
               <InputCursorDropdown
                 value={this.state.value}
                 onChange={this.handleChange}
-                onDropdownChange={this.handleDropdownChange}
+                onCursorDropdownChange={this.handleCursorDropdownChange}
               >
                 <CursorDropdown
                   pattern={/^:([\w+-]*)$/}

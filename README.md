@@ -21,7 +21,7 @@ import { WithCursorDropdown, CursorDropdown } from "react-cursor-dropdown";
 import SomeListComponent from "SomeListComponent";
 
 const Input = props => <input {...props} />;
-const InputCursorDropdown = WithCursorDropdown(Input);
+const InputWithCursorDropdown = WithCursorDropdown(Input);
 
 class App extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class App extends Component {
 
   render() {
     return (
-      <InputCursorDropdown
+      <InputWithCursorDropdown
         value={this.state.value}
         onChange={this.handleChange}
         onCursorDropdownChange={this.handleCursorDropdownChange}
@@ -52,7 +52,7 @@ class App extends Component {
         // Specify the regex to match against the current word (capture group
         required)
         <CursorDropdown pattern={/^:(\w*)$/} component={SomeListComponent} />
-      </InputCursorDropdown>
+      </InputWithCursorDropdown>
     );
   }
 }

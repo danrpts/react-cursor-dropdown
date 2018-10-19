@@ -9,14 +9,16 @@ function WithCursorDropdown(WrappedComponent) {
   class InputWithCursorDropdown extends Component {
     // TODO:
     // static propTypes = {
-    //   onDropdownChange: PropTypes.func,
+    //   onCursorDropdownChange: PropTypes.func,
     //   forwardedRef: PropTypes.node
     // };
 
     constructor(props) {
       super(props);
       this.wrapperRef = React.createRef();
-      this.handleDropdownChange = this.handleDropdownChange.bind(this);
+      this.handleCursorDropdownChange = this.handleCursorDropdownChange.bind(
+        this
+      );
       this.state = {
         cursor: {
           word: { value: "", start: 0, end: 0 },
@@ -32,8 +34,8 @@ function WithCursorDropdown(WrappedComponent) {
         : this.wrapperRef.current.firstChild;
     }
 
-    handleDropdownChange(value) {
-      this.props.onDropdownChange({
+    handleCursorDropdownChange(value) {
+      this.props.onCursorDropdownChange({
         value,
         cursor: this.state.cursor.word
       });
@@ -63,7 +65,7 @@ function WithCursorDropdown(WrappedComponent) {
     render() {
       const {
         children,
-        onCursorDropdownChange, // just toremove from passed remainingProps
+        onCursorDropdownChange, // just to remove from passed remainingProps
         forwardedRef,
         ...remainingProps
       } = this.props;
@@ -83,7 +85,7 @@ function WithCursorDropdown(WrappedComponent) {
             <DropdownContext.Provider
               value={{
                 cursor: this.state.cursor.word,
-                handleDropdownChange: this.handleDropdownChange
+                handleCursorDropdownChange: this.handleCursorDropdownChange
               }}
             >
               {children}
