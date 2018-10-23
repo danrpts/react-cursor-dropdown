@@ -39,6 +39,7 @@ export default class EmojiList extends Component {
         break;
       case "Enter":
       case "Tab":
+        e.preventDefault();
         const { char } = this.filtered[this.state.option];
         this.props.onChange(`${char} `);
         break;
